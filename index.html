@@ -4,8 +4,440 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aspen Capital - Financial Services</title>
-    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Base Styles (Replaces Tailwind Base and Inter Font) */
+        body {
+            font-family: Arial, Helvetica, sans-serif; /* Fallback to system font */
+            background-color: #f8fafc; /* Light background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
 
+        /* Variables and Custom Colors */
+        :root {
+            --primary-blue: #0087c5;
+            --text-color: #334155; /* Gray 800/700 */
+            --subtle-text: #64748b; /* Gray 600 */
+        }
+
+        /* Utility Classes */
+        .primary-bg { background-color: var(--primary-blue); }
+        .text-primary { color: var(--primary-blue); }
+        .border-primary { border-color: var(--primary-blue); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .rounded-xl { border-radius: 0.75rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-8 { margin-top: 2rem; }
+        .leading-tight { line-height: 1.25; }
+
+        /* Container and Layout */
+        .container {
+            max-width: 1280px; /* Equivalent to max-w-7xl */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 100%;
+        }
+
+        /* Header and Navigation */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .logo-brand-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer; 
+        }
+        
+        /* Styling for the SVG/Image logo */
+        .logo-svg {
+            width: 92px;
+            height: 52px;
+            margin-right: 0.5rem;
+            border-radius: 0.5rem; /* Added rounded corners to logo */
+            transform: translateY(-2px); /* Fine-tune vertical alignment with text */
+        }
+        
+        /* Text Group Container */
+        .logo-text-group {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2; /* Tighter line height for the logo text group */
+        }
+        
+        /* Main Brand Name */
+        .logo-text {
+            font-size: 1.25rem; /* Adjusted slightly smaller to fit the group */
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        /* Subsidiary Info */
+        .logo-subtitle {
+            font-size: 0.65rem; /* Smallest text size */
+            font-weight: 500;
+            color: var(--subtle-text);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-link {
+            color: var(--subtle-text);
+            text-decoration: none;
+            transition: color 0.15s;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+        .active-link {
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            padding: 0.5rem;
+            color: var(--subtle-text);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .mobile-nav-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            color: #4b5563; /* gray-700 */
+            background-color: #f9fafb; /* gray-50 */
+            border-top: 1px solid #e5e7eb; /* border-gray-200 */
+            transition: background-color 0.15s;
+        }
+        .mobile-nav-item:hover {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .page-content {
+            display: none; /* Controlled by JS */
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        /* Home Page Hero */
+        .hero-section {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            border-top: 4px solid var(--primary-blue);
+            margin-bottom: 2rem;
+        }
+        .hero-title {
+            font-size: 2.25rem; /* sm:text-5xl */
+            font-weight: 800; /* font-extrabold */
+            color: #111827; /* gray-900 */
+            margin-bottom: 1rem;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem; /* text-xl */
+            color: var(--subtle-text);
+            margin-bottom: 2rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .cta-button:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Value Proposition Grid (Mobile first) */
+        .grid-3-col {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .card-icon {
+            font-size: 2.25rem; /* text-4xl */
+            color: var(--primary-blue);
+            margin-bottom: 0.75rem;
+        }
+        .card-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700;
+            color: #1f2937; /* gray-800 */
+            margin-bottom: 0.5rem;
+        }
+        .card-text {
+            color: #4b5563; /* gray-600 */
+        }
+
+        /* About, Gallery & Contact Page Headings */
+        .page-heading {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+            color: #1f2937; /* gray-900 */
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        /* About Page Details */
+        .about-text {
+            color: #374151; /* gray-700 */
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        .credentials-box {
+            background-color: #f3f4f6; /* gray-100 */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+         .leadership-avatar {
+            width: 3rem;
+            height: 3rem;
+            background-color: var(--primary-blue);
+            border-radius: 9999px;
+            overflow: hidden; /* Crucial for circular image */
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+
+           .leadership-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .leader-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .leader-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .leader-title {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* --- Slideshow / Gallery Styles --- */
+        .slideshow-container {
+            max-width: 800px;
+            position: relative;
+            margin: auto;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide {
+            display: none; /* Hide slides by default */
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .slide-caption {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 1rem 0.75rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0,0,0,0.5);
+            line-height: 0; /* Center the icon vertically */
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* On hover, add a darker background color */
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        /* Fading animation */
+        @keyframes fade {
+            from {opacity: .4} 
+            to {opacity: 1}
+        }
+        /* --- End Slideshow Styles --- */
+
+
+        /* Contact Page */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .contact-item {
+            background-color: #f9fafb; /* gray-50 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .contact-heading {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .contact-detail-box {
+            border-left: 4px solid var(--primary-blue);
+            padding-left: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .contact-link {
+            display: block;
+            color: var(--primary-blue);
+            text-decoration: none;
+            word-break: break-all;
+            font-family: monospace; /* font-mono */
+        }
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+        .fsp-footer {
+            margin-top: 2rem;
+            text-align: center;
+            background-color: rgba(0, 135, 197, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1f2937; /* gray-800 */
+            color: white;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        /* MEDIA QUERIES (Replaces Tailwind sm/md/lg prefixes) */
+        @media (min-width: 640px) { /* Small screens (sm) */
+            .hero-section {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (min-width: 768px) { /* Medium screens (md) */
+            /* Header */
+            .header-nav-desktop {
+                display: flex !important;
+                gap: 2rem;
+            }
+            .mobile-menu-btn {
+                display: none;
+            }
+            .mobile-menu-drawer {
+                display: none !important;
+            }
+            
+            /* Home Page Grid */
+            .grid-3-col {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            /* Contact Page Grid */
+            .contact-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            
+            /* Footer alignment */
+            .footer-content {
+                text-align: left;
+            }
+        }
+        
+        @media (min-width: 1024px) { /* Large screens (lg) */
+            .hero-section {
+                padding: 4rem;
+            }
+        }
+    </style>
 </head>
 <body class="min-h-screen">
 
@@ -13,10 +445,14 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <!-- Logo/Brand (Updated to match PDF branding) -->
+                <!-- Logo/Brand (Updated to use Image Placeholder) -->
                 <div class="logo-brand-container" onclick="showPage('home')">
-                    <!-- Stylized 'A' Icon -->
-                    <div class="logo-icon">A</div>
+                    <!-- Image Placeholder for the Logo -->
+                    <img src="images/company logo.jpeg"
+                         alt="Aspen Capital Logo" 
+                         class="logo-svg" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/32x32/64748b/ffffff?text=AC'" 
+                    />
                     
                     <!-- Text Group -->
                     <div class="logo-text-group">
@@ -29,6 +465,7 @@
                 <nav class="header-nav-desktop" style="display: none;">
                     <button onclick="showPage('home')" class="nav-link">Home</button>
                     <button onclick="showPage('about')" class="nav-link">About Us</button>
+                    <button onclick="showPage('gallery')" class="nav-link">Gallery</button>
                     <button onclick="showPage('contact')" class="nav-link">Contact Us</button>
                 </nav>
 
@@ -43,6 +480,7 @@
         <div id="mobile-menu" class="mobile-menu-drawer" style="display: none;">
             <button onclick="showPage('home'); toggleMobileMenu()" class="mobile-nav-item">Home</button>
             <button onclick="showPage('about'); toggleMobileMenu()" class="mobile-nav-item">About Us</button>
+            <button onclick="showPage('gallery'); toggleMobileMenu()" class="mobile-nav-item">Gallery</button>
             <button onclick="showPage('contact'); toggleMobileMenu()" class="mobile-nav-item">Contact Us</button>
         </div>
     </header>
@@ -53,144 +491,175 @@
         <!-- Home Page -->
         <section id="page-home" class="page-content" style="display: block;">
             <div class="hero-section">
-                <h1 class="hero-title">
-                    <span class="text-primary">Put Money Back</span> Where It Belongs - In Your Pocket
-                </h1>
-                <p class="hero-subtitle">
-                    A little extra cash each month could make a world of difference, and taking out another loan isn't the answer.
-                </p>
-                <a href="#" onclick="showPage('about')" class="cta-button">
-                    Discover Our Solution
-                </a>
+                <h1 class="hero-title">Put Money Back Where It Belongs—In Your Pocket.</h1>
+                <p class="hero-subtitle">Optimize your financial portfolio, consolidate your policies, and unlock massive monthly savings without sacrificing coverage.</p>
+                <a href="#" onclick="showPage('contact'); return false;" class="cta-button">Start Saving Now</a>
             </div>
 
-            <!-- Value Proposition Section -->
-            <div class="grid-3-col">
+            <!-- Value Proposition -->
+            <div class="grid-3-col mb-4">
                 <div class="card">
                     <div class="card-icon">💰</div>
-                    <h3 class="card-title">Cut Costs, Not Cover</h3>
-                    <p class="card-text">Many South Africans are over-insured without realizing it. We review your existing policies to retain the same or more cover while paying significantly less.</p>
+                    <div class="card-title">Premium Reduction</div>
+                    <p class="card-text">We specialize in reviewing and optimizing your existing policies to dramatically cut your monthly premiums.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🤝</div>
+                    <div class="card-title">Policy Consolidation</div>
+                    <p class="card-text">Combine life, home contents, and funeral cover into one simple, cost-effective, and easy-to-manage package.</p>
                 </div>
                 <div class="card">
                     <div class="card-icon">🛡️</div>
-                    <h3 class="card-title">Comprehensive Consolidation</h3>
-                    <p class="card-text">We help consolidate your life insurance, home contents, and funeral cover into one cost-effective, comprehensive package.</p>
+                    <div class="card-title">Retain Full Coverage</div>
+                    <p class="card-text">Our solutions ensure you maintain the same level of protection, often enhancing it, while paying less.</p>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🎁</div>
-                    <h3 class="card-title">Premium Holiday</h3>
-                    <p class="card-text">Enjoy a premium holiday every December—no payments for the month while your full benefits remain intact. Start saving today!</p>
-                </div>
-            </div>
-
-            <!-- Testimonial/Example -->
-            <div class="testimonial-section mt-8">
-                <h3 class="testimonial-title">Remarkable Results</h3>
-                <p style="font-size: 1.125rem;">
-                    "One client recently reduced his combined premiums from R6,500 to just R2,500 per month, without sacrificing any benefits—<strong style="font-weight: 700;">saving a massive R4,000 every month!</strong>"
-                </p>
-                <div style="margin-top: 1rem; text-align: right;">
-                    <button onclick="showPage('contact')" class="testimonial-btn">
-                        Contact Us to Save
-                    </button>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- About Us Page (Hidden by default) -->
-        <section id="page-about" class="page-content" style="display: none;">
-            <h2 class="page-heading">About Aspen Capital</h2>
-            
-            <div class="card">
-                <p class="about-text">
-                    Aspen Capital is dedicated to guiding you on your wealth creation and risk planning journey. We believe in smart financial management, which starts with optimizing your current expenses. Like smart motorists who review their vehicle insurance yearly, we help smart policyholders review their entire insurance portfolio annually to cut costs while maintaining full protection.
-                </p>
-                <p class="about-text">
-                    Our mission is simple: to put money back where it belongs—in your pocket—by identifying areas where you are over-insured. We provide powerful financial solutions that consolidate multiple policies (life, home contents, funeral cover) into one comprehensive, cost-effective package.
-                </p>
             </div>
             
+            <!-- Credentials Block -->
             <div class="credentials-box mt-8">
-                <h3 class="card-title" style="margin-bottom: 0.75rem;">Our Credentials</h3>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: #4b5563; font-size: 1rem; padding-left: 0;">
-                    <li style="margin-bottom: 0.5rem;">**Registered FSP-51023** (Licensed Financial Services Provider).</li>
-                    <li style="margin-bottom: 0.5rem;">A Subsidiary of **Bongipenelope Enterprise (Pty) Ltd**.</li>
-                    <li style="margin-bottom: 0.5rem;">Proud Affiliate of industry leaders like **Hollard, Liberty, and Allan Gray**.</li>
-                </ul>
-            </div>
-
-            <div class="card mt-8">
-                <h3 class="card-title" style="margin-bottom: 0.75rem;">Leadership</h3>
-                <div class="leader-info" style="margin-bottom: 0.75rem;">
-                    <div class="leadership-avatar" style="margin-right: 1rem;">BG</div>
-                    <div>
-                        <p class="leader-name">Bongi Sikhakhane</p>
-                        <p class="leader-title">Group Executive Director</p>
-                    </div>
-                </div>
-                <div class="leader-info">
-                    <div class="leadership-avatar" style="margin-right: 1rem;">NT</div>
-                    <div>
-                        <p class="leader-name">Ntobeko Sikhakhane</p>
-                        <p class="leader-title">Group Associate</p>
-                    </div>
-                </div> 
-                   <div style="margin-top: 1rem; text-align: right;">
-                    <button onclick="showPage('contact')" class="testimonial-btn">
-                        Contact Us to Save
-                    </button>
-                </div>
+                <h3 class="text-primary font-bold text-xl mb-2">Our Credentials</h3>
+                <p class="about-text text-sm">Aspen Capital is a licensed Financial Services Provider (FSP No: 51023) and a proud affiliate of Hollard, Liberty, and Allan Gray. We operate as a subsidiary of Bongipenelope Enterprise (Pty) Ltd.</p>
             </div>
         </section>
 
-        <!-- Contact Us Page (Hidden by default) -->
-        <section id="page-contact" class="page-content" style="display: none;">
-            <h2 class="page-heading">Contact Us</h2>
+        <!-- About Us Page -->
+        <section id="page-about" class="page-content">
+            <h2 class="page-heading">About Aspen Capital</h2>
+            <div class="mb-8">
+                <p class="about-text">Aspen Capital, a subsidiary of Bongipenelope Enterprise (Pty) Ltd, is dedicated to empowering South Africans to achieve financial freedom through smart insurance portfolio management. Our core mission is to optimize policies, consolidate coverage, and deliver significant cost savings to our clients.</p>
+                <p class="about-text">We act as financial navigators, guiding you through the complex landscape of insurance policies. By applying the same diligence a smart motorist uses to review their vehicle insurance, we review and refine your entire risk portfolio, ensuring every cent you pay is working for you.</p>
+            </div>
+
+            <h3 class="page-heading" style="font-size: 1.5rem; border-bottom-width: 1px;">Our Leadership</h3>
             
-            <div class="card">
-                <p class="about-text" style="margin-bottom: 1.5rem;">
-                    Ready to start saving? Get in touch with our team today. We look forward to walking this wealth creation and risk planning journey with you.
-                </p>
+                         <div class="leader-info mt-4">
+                <!-- Updated: Replaced initials with image placeholder -->
+                <div class="leadership-avatar mr-4">
+                    <img src="images/Bongi.jpeg" 
+                         alt="Bongi Sikhakhane" 
+                         class="leadership-img" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/64748b/ffffff?text=BS'" 
+                    />
+                </div>
+                <div>
+                    <div class="leader-name">Bongi Sikhakhane</div>
+                    <div class="leader-title">Group Executive Director</div>
+                </div>
+            </div>
+            <div class="leader-info">
+                <!-- Updated: Replaced initials with image placeholder -->
+                <div class="leadership-avatar mr-4">
+                    <img src="images/Ntobeko.jpeg" 
+                         alt="Ntobeko Sikhakhane" 
+                         class="leadership-img" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/64748b/ffffff?text=NS'" 
+                    />
+                </div>
+                <div>
+                    <div class="leader-name">Ntobeko Sikhakhane</div>
+                    <div class="leader-title">Group Associate</div>
+                </div>
+            </div>
 
-                <div class="contact-grid">
-                    
-                    <!-- Phone Numbers -->
-                    <div class="contact-item">
-                        <h3 class="contact-heading"><span style="margin-right: 0.5rem;">📞</span> Phone Numbers</h3>
-                        <div class="contact-detail-box">
-                            <p style="margin-bottom: 0.5rem;">
-                                <span style="font-weight: 500;">Bongi Sikhakhane:</span>
-                                <span style="font-weight: 500;">Group Executive Director:</span>
-                                <a href="tel:+27822352880" class="contact-link">082 235 2880</a>
-                            </p>
-                            <p>
-                                <span style="font-weight: 500;">Ntobeko Sikhakhane:</span>
-                                <span style="font-weight: 500;">Group Associate:</span>
-                                <a href="tel:+27645114192" class="contact-link">064 511 4192</a>
-                            </p>
-                        </div>
-                    </div>
 
-                    <!-- Email Addresses -->
-                    <div class="contact-item">
-                        <h3 class="contact-heading"><span style="margin-right: 0.5rem;">✉️</span> Email Addresses</h3>
-                        <div class="contact-detail-box">
-                            <p style="margin-bottom: 0.5rem;">
-                                <span style="font-weight: 500;">General Inquiries:</span>
-                                <a href="mailto:sphongicapital@gmail.com" class="contact-link">sphongicapital@gmail.com</a>
-                            </p>
-                            <p>
-                                <span style="font-weight: 500;">Bongi Sikhakhane:</span>
-                                <a href="mailto:bongi@bongipenelope.co.za" class="contact-link">bongi@bongipenelope.co.za</a>
-                            </p>
-                        </div>
+            <div class="fsp-footer">
+                FSP No: 51023 | A Licensed Financial Services Provider
+            </div>
+        </section>
+
+        <!-- Gallery Page (Slideshow) -->
+        <section id="page-gallery" class="page-content">
+            <h2 class="page-heading">Meet the Leadership and our dedicated team</h2>
+            <p class="about-text mb-6">Our dedicated team drives our commitment to your financial success. Swipe or click through to see the faces behind Aspen Capital.</p>
+            
+            <!-- Slideshow Container -->
+            <div class="slideshow-container">
+
+                <!-- Slide 1: Bongi Sikhakhane -->
+                <div class="slide">
+                    <img src="images/Bongi.jpeg" 
+                         alt="Bongi Sikhakhane, Group Executive Director" 
+                         class="slide-image"
+                    >
+                    <div class="slide-caption">
+                        Bongi Sikhakhane — Group Executive Director
                     </div>
                 </div>
 
-                <div class="fsp-footer">
-                    <p>Aspen Capital Group - Registered FSP-51023</p>
+                <!-- Slide 2: Ntobeko Sikhakhane -->
+                <div class="slide">
+                    <img src="images/Ntobeko.jpeg" 
+                         alt="Ntobeko Sikhakhane, Group Associate" 
+                         class="slide-image"
+                    >
+                    <div class="slide-caption">
+                        Ntobeko Sikhakhane — Group Associate
+                    </div>
                 </div>
+
+                <!-- Slide 3: The Aspen Capital Team -->
+                <div class="slide">
+                    <img src="images/team 1.jpeg" 
+                         alt="The Aspen Capital Team" 
+                         class="slide-image"
+                    >
+                    <div class="slide-caption">
+                        The Dedicated Aspen Capital Team
+                    </div>
+                </div>
+
+                 <!-- Slide 3: The Aspen Capital Team -->
+                <div class="slide">
+                    <img src="images/team 2.jpeg" 
+                         alt="The Aspen Capital Team" 
+                         class="slide-image"
+                    >
+                    <div class="slide-caption">
+                        The Dedicated Aspen Capital Team
+                    </div>
+                </div>
+
+                <!-- Next and previous buttons -->
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+
+            <div class="fsp-footer mt-8">
+                FSP No: 51023 | Dedicated to Client Success
+            </div>
+        </section>
+
+        <!-- Contact Us Page -->
+        <section id="page-contact" class="page-content">
+            <h2 class="page-heading">Get in Touch</h2>
+            <p class="about-text mb-6">Ready to start saving? Contact us today for a free, no-obligation portfolio review. We are here to help you walk the wealth creation and risk planning journey.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-item card">
+                    <h3 class="contact-heading"><span style="margin-right: 0.5rem;">📞</span> Call Us</h3>
+                    <div class="contact-detail-box">
+                        <p class="font-bold">Bongi Sikhakhane (Group Executive Director):</p>
+                        <a href="tel:+27822352880" class="contact-link">082 235 2880</a>
+                    </div>
+                    <div class="contact-detail-box">
+                        <p class="font-bold">Ntobeko Sikhakhane (Group Associate):</p>
+                        <a href="tel:+27645114192" class="contact-link">064 511 4192</a>
+                    </div>
+                </div>
+
+                <div class="contact-item card">
+                    <h3 class="contact-heading"><span style="margin-right: 0.5rem;">📧</span> Email Us</h3>
+                    <div class="contact-detail-box">
+                          <p class="font-bold">For General Enquiries:</p>
+                        <a href="mailto:sphongicapital@gmail.com" class="contact-link">sphongicapital@gmail.com</a>
+                          <p class="font-bold">Bongi Sikhakhane (Group Executive Director):</p>
+                        <a href="mailto:bongi@bongipenelope.co.za" class="contact-link">bongi@bongipenelope.co.za</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fsp-footer">
+                Aspen Capital Group | FSP No: 51023
             </div>
         </section>
 
@@ -198,87 +667,141 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-content">
-            <p style="font-size: 0.875rem;">
-                &copy; 2025 Aspen Capital, a Subsidiary of Bongipenelope Enterprise (Pty) Ltd. FSP No: 51023.
-            </p>
+        <div class="container footer-content" style="text-align: center;">
+            &copy; 2024 Aspen Capital. All Rights Reserved. FSP No: 51023.
         </div>
     </footer>
 
+    <!-- JavaScript for Navigation and Slideshow -->
     <script>
-        // Get all page sections
-        const pages = document.querySelectorAll('.page-content');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        // --- Navigation Logic ---
+        // Set the active page and URL hash
+        function updateActivePage(pageId) {
+            // Update URL hash
+            history.pushState(null, null, '#' + pageId);
 
-        // Check if we are on a mobile screen for initial setup
-        const isMobile = window.matchMedia("(max-width: 767px)").matches;
-        const desktopNav = document.querySelector('.header-nav-desktop');
-        if (!isMobile) {
-            // Show desktop nav by default on large screens
-            desktopNav.style.display = 'flex';
-        }
-
-
-        /**
-         * Hides all pages and shows the requested page by ID.
-         * Updates the active state of navigation links.
-         * @param {string} pageId - The ID of the page to show (e.g., 'home', 'about', 'contact').
-         */
-        function showPage(pageId) {
             // Hide all pages
-            pages.forEach(page => {
-                page.style.display = 'none';
+            document.querySelectorAll('.page-content').forEach(section => {
+                section.style.display = 'none';
             });
 
             // Show the requested page
-            const activePage = document.getElementById(`page-${pageId}`);
-            if (activePage) {
-                activePage.style.display = 'block';
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.style.display = 'block';
+                // If switching to the gallery page, ensure the slideshow starts/resets
+                if (pageId === 'gallery') {
+                    resetSlideshow();
+                } else {
+                    // Stop the slideshow if we leave the gallery page
+                    clearTimeout(slideTimer); 
+                }
             }
 
-            // Update navigation active state
-            navLinks.forEach(link => {
-                link.classList.remove('active-link');
-                const pageToCheck = link.getAttribute('onclick').match(/'(.*?)'/)[1];
-                if (pageToCheck === pageId) {
+            // Update active state in navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkText = link.textContent.toLowerCase().replace(/\s/g, '');
+                if (linkText.includes(pageId)) {
                     link.classList.add('active-link');
+                } else {
+                    link.classList.remove('active-link');
                 }
             });
-            
-            // Scroll to top of content
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            document.querySelectorAll('.mobile-nav-item').forEach(link => {
+                const linkText = link.textContent.toLowerCase().replace(/\s/g, '');
+                if (linkText.includes(pageId)) {
+                    link.style.fontWeight = '700'; // Simulate active styling for mobile
+                } else {
+                    link.style.fontWeight = '400';
+                }
+            });
+            window.scrollTo(0, 0); // Scroll to top on page change
         }
 
-        /**
-         * Toggles the mobile menu visibility.
-         */
+        // Handle navigation link clicks
+        function showPage(pageId) {
+            updateActivePage(pageId);
+        }
+
+        // Mobile menu toggle
         function toggleMobileMenu() {
-            if (mobileMenu.style.display === 'block') {
-                mobileMenu.style.display = 'none';
-            } else {
-                mobileMenu.style.display = 'block';
-            }
+            const menu = document.getElementById('mobile-menu');
+            const isHidden = menu.style.display === 'none' || menu.style.display === '';
+            menu.style.display = isHidden ? 'block' : 'none';
         }
 
-        // Event listener for mobile menu button
-        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-        
-        // Listen for screen resize to handle navigation visibility (pure CSS handles most, but this helps initial state)
-        window.addEventListener('resize', () => {
-             if (window.matchMedia("(min-width: 768px)").matches) {
-                desktopNav.style.display = 'flex';
-                mobileMenu.style.display = 'none'; // Hide mobile menu if screen is resized up
+        // Event listeners for mobile menu button
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Initial page load based on URL hash
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.substring(1);
+            const validPages = ['home', 'about', 'gallery', 'contact'];
+            if (hash && validPages.includes(hash)) {
+                updateActivePage(hash);
             } else {
-                desktopNav.style.display = 'none';
+                updateActivePage('home'); // Default to home page
             }
         });
 
-        // Initialize: Show the home page and set active link when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            showPage('home');
+        // Handle browser back/forward buttons
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                updateActivePage(hash);
+            }
         });
+
+        // --- Slideshow Logic ---
+        let slideIndex = 1;
+        let slideTimer;
+        const slideInterval = 5000; // 5 seconds
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            if (slides.length === 0) return; // Exit if no slides are found
+
+            // Handle wrap-around
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+
+            // Hide all slides
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            // Show the current slide
+            slides[slideIndex - 1].style.display = "block";
+            
+            // Reset and restart the auto-advance timer
+            clearTimeout(slideTimer);
+            slideTimer = setTimeout(() => {
+                // Advance to the next slide automatically
+                plusSlides(1);
+            }, slideInterval);
+        }
+        
+        // Manual controls (and auto advance trigger)
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+        
+        // Start/Reset the slideshow when the gallery page is loaded
+        function resetSlideshow() {
+            const galleryPage = document.getElementById('page-gallery');
+            if (galleryPage && galleryPage.style.display === 'block') {
+                // Ensure the timer is cleared before starting a new one
+                clearTimeout(slideTimer); 
+                slideIndex = 0; // Set to 0 so plusSlides(1) starts at 1
+                plusSlides(1);
+            } else {
+                // If function is called but page is hidden, ensure timer is stopped
+                clearTimeout(slideTimer); 
+            }
+        }
     </script>
 </body>
 </html>
+   
